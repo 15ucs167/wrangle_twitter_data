@@ -1,5 +1,8 @@
 import pandas as pd
 import requests
+import tweepy
+import json
+import time
 
 # Create a function for gathering data
 
@@ -16,6 +19,40 @@ def gather_data():
 
     # Load the downloaded file in a Pandas Dataframe
     image_predictions = pd.read_csv('image_predictions.tsv', sep='\t')
+
+    consumer_key = 'p8XPAcIYhPR6AlzJCJi1TCUcp'
+    consumer_secret = 'uDjWIROWB6GFxStScSgRSAJkTdUObupJgNTRXq1kOLtztMZS4V'
+    access_token = '4698250152-TjymcC5OjNnx7E7e4rGSHaYU6PoPgheIvQ2ICOK'
+    access_secret = 'mTL9FF9C0a614gY7vhghWaVcXn0eEbcP3xi5Uc72E9qT3'
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_secret)
+
+    api = tweepy.API(auth)
+
+    counter = 1
+
+    for id in archive['tweet_id']:
+        try:
+            start = time.time()
+            print(counter)
+            print('Tweet ID: ', id)
+            counter += 1
+            tweet = api.get_status(id, tweet_mode='extended')
+            with open('tweet_json.txt', 'a') as file:
+                json.dump(tweet._json, file)
+                file.write('\n')
+                end = time.time()
+                print('Time taken: ', end-start)
+
+        except Exception as e:
+            start = time.time()
+            print(counter)
+            print('Tweet ID: ', id)
+            counter += 1
+            end = time.time()
+            print('Time taken', end-start)
+            continue
 
 def main():
     gather_data()
