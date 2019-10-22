@@ -54,6 +54,13 @@ def gather_data():
             print('Time taken', end-start)
             continue
 
+    tweet_list = []
+    with open('tweet_json.txt', 'r') as f:
+        for line in f:
+            tweet_list.append(json.loads(line))
+
+    tweet_data = pd.DataFrame(tweet_list)
+
 def main():
     gather_data()
 
