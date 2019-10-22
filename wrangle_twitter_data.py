@@ -20,6 +20,7 @@ def gather_data():
     # Load the downloaded file in a Pandas Dataframe
     image_predictions = pd.read_csv('image_predictions.tsv', sep='\t')
 
+    #Create Twitter API object using tweepy
     consumer_key = 'p8XPAcIYhPR6AlzJCJi1TCUcp'
     consumer_secret = 'uDjWIROWB6GFxStScSgRSAJkTdUObupJgNTRXq1kOLtztMZS4V'
     access_token = '4698250152-TjymcC5OjNnx7E7e4rGSHaYU6PoPgheIvQ2ICOK'
@@ -32,6 +33,7 @@ def gather_data():
 
     counter = 1
 
+    #For each tweet in archive, gather additional data and store it in a txt file in a line
     for id in archive['tweet_id']:
         try:
             start = time.time()
@@ -54,11 +56,13 @@ def gather_data():
             print('Time taken', end-start)
             continue
 
+    # For each line in the txt file, get the data as a Python dictionary, and append it to a list
     tweet_list = []
     with open('tweet_json.txt', 'r') as f:
         for line in f:
             tweet_list.append(json.loads(line))
 
+    # Use the list of dictionaries to create a Pandas DataFrame 
     tweet_data = pd.DataFrame(tweet_list)
 
 def main():
