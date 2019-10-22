@@ -6,22 +6,26 @@ import time
 
 # Create a function for gathering data
 
-def gather_data():
+def gather_archive():
 
     # Put archive in a Pandas DataFrame
     archive = pd.read_csv('twitter-archive-enhanced.csv')
+    return archive
 
+def gather_image_predictions():
     # Download image predictions file from its URL using requests library
-    url = 'https://d17h27t6h515a5.cloudfront.net/topher/2017/August/599fd2ad_image-predictions/image-predictions.tsv'
+    """url = 'https://d17h27t6h515a5.cloudfront.net/topher/2017/August/599fd2ad_image-predictions/image-predictions.tsv'
     response = requests.get(url)
     with open('image_predictions.tsv', mode='wb') as file:
-        file.write(response.content)
+        file.write(response.content)"""
 
     # Load the downloaded file in a Pandas Dataframe
     image_predictions = pd.read_csv('image_predictions.tsv', sep='\t')
+    return image_predictions
 
+def gather_additional_twitter_data(archive):
     #Create Twitter API object using tweepy
-    consumer_key = 'p8XPAcIYhPR6AlzJCJi1TCUcp'
+    """consumer_key = 'p8XPAcIYhPR6AlzJCJi1TCUcp'
     consumer_secret = 'uDjWIROWB6GFxStScSgRSAJkTdUObupJgNTRXq1kOLtztMZS4V'
     access_token = '4698250152-TjymcC5OjNnx7E7e4rGSHaYU6PoPgheIvQ2ICOK'
     access_secret = 'mTL9FF9C0a614gY7vhghWaVcXn0eEbcP3xi5Uc72E9qT3'
@@ -54,7 +58,7 @@ def gather_data():
             counter += 1
             end = time.time()
             print('Time taken', end-start)
-            continue
+            continue"""
 
     # For each line in the txt file, get the data as a Python dictionary, and append it to a list
     tweet_list = []
@@ -62,11 +66,14 @@ def gather_data():
         for line in f:
             tweet_list.append(json.loads(line))
 
-    # Use the list of dictionaries to create a Pandas DataFrame 
+    # Use the list of dictionaries to create a Pandas DataFrame
     tweet_data = pd.DataFrame(tweet_list)
+    return tweet_data
 
 def main():
-    gather_data()
+    archive = gather_archive()
+    image_predictions = gather_image_predictions()
+    tweet_data = gather_additional_twitter_data(archive)
 
 if __name__ == '__main__':
     main()
