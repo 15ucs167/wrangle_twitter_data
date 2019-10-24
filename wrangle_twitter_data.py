@@ -346,7 +346,8 @@ def clean_data(archive, image_predictions, tweet_data):
 
     return archive_clean
 
-
+    def store_data(archive_clean):
+        archive_clean.to_csv('twitter_archive_master.csv', index=False)
 
 
 def main():
@@ -355,6 +356,7 @@ def main():
     tweet_data = gather_additional_twitter_data(archive)
     assess_data(archive, image_predictions, tweet_data)
     archive_clean = clean_data(archive, image_predictions, tweet_data)
+    store_data(archive_clean)
 
 if __name__ == '__main__':
     main()
