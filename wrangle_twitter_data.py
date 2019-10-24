@@ -3,6 +3,8 @@ import requests
 import tweepy
 import json
 import time
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Create a function for gathering data
 
@@ -346,9 +348,60 @@ def clean_data(archive, image_predictions, tweet_data):
 
     return archive_clean
 
-    def store_data(archive_clean):
-        archive_clean.to_csv('twitter_archive_master.csv', index=False)
+def store_data(archive_clean):
+    archive_clean.to_csv('twitter_archive_master.csv', index=False)
 
+def analyze_data():
+    df = pd.read_csv('twitter_archive_master.csv')
+
+    # Most popular dog names
+
+    name_counts = df['name'].value_counts()[2: 13]
+    name_counts
+    name_counts.drop(index='the', inplace=True)
+    plt.pie(name_counts, labels=name_counts.index );
+    plt.title('MOST POPULAR DOG NAMES');
+    plt.show()
+
+    # Cooper is the most popular dog name
+
+    # Most Popular Dog Breeds
+
+    breed_count = df['predicted_breed'].value_counts()
+    breed_count
+    breed_count_proportions = breed_count/breed_count.sum()
+    popular_breeds = breed_count_proportions[0: 10]
+    ind = np.arange(len(popular_breeds))
+    width = 0.35
+    plt.bar(0 , popular_breeds.values[0], label=popular_breeds.index[0]);
+    plt.bar(1, popular_breeds.values[1], label=popular_breeds.index[1]);
+    plt.bar(2, popular_breeds.values[2], label=popular_breeds.index[2]);
+    plt.bar(3, popular_breeds.values[3], label=popular_breeds.index[3]);
+    plt.bar(4, popular_breeds.values[4], label=popular_breeds.index[4]);
+    plt.bar(5, popular_breeds.values[5], label=popular_breeds.index[5]);
+    plt.bar(6, popular_breeds.values[6], label=popular_breeds.index[6]);
+    plt.bar(7, popular_breeds.values[7], label=popular_breeds.index[7]);
+    plt.bar(8, popular_breeds.values[8], label=popular_breeds.index[8]);
+    plt.bar(9, popular_breeds.values[9], label=popular_breeds.index[9]);
+    plt.ylabel('PROPORTION')
+    plt.xlabel('DOG BREED')
+    plt.title('MOST POPULAR DOG BREEDS')
+    locations = ind + width/2
+    labels = ind + 1
+    plt.xticks(locations, labels)
+    plt.legend();
+    plt.show()
+
+    # Golden Retriever is the most popular dog breed
+
+    # Dog type and favorite_count
+
+    avg_likes_per_dog_type = df.groupby('dog_type').sum()['favorite_count']/df.groupby('dog_type').count()['tweet_id']
+    avg_likes_per_dog_type[1:].plot(kind='bar');
+    plt.title('AVERAGE LIKES PER DOG TYPE');
+    plt.show()
+
+    # Thus, we can see that out of the four dog types, puppo received the maximum likes while pupper received the least
 
 def main():
     archive = gather_archive()
@@ -357,6 +410,7 @@ def main():
     assess_data(archive, image_predictions, tweet_data)
     archive_clean = clean_data(archive, image_predictions, tweet_data)
     store_data(archive_clean)
+    analyze_data()
 
 if __name__ == '__main__':
     main()
