@@ -27,10 +27,10 @@ def gather_image_predictions():
 
 def gather_additional_twitter_data(archive):
     #Create Twitter API object using tweepy
-    """consumer_key = 'p8XPAcIYhPR6AlzJCJi1TCUcp'
-    consumer_secret = 'uDjWIROWB6GFxStScSgRSAJkTdUObupJgNTRXq1kOLtztMZS4V'
-    access_token = '4698250152-TjymcC5OjNnx7E7e4rGSHaYU6PoPgheIvQ2ICOK'
-    access_secret = 'mTL9FF9C0a614gY7vhghWaVcXn0eEbcP3xi5Uc72E9qT3'
+    """consumer_key =
+    consumer_secret =
+    access_token =
+    access_secret = 
 
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_secret)
@@ -399,6 +399,8 @@ def analyze_data():
     avg_likes_per_dog_type = df.groupby('dog_type').sum()['favorite_count']/df.groupby('dog_type').count()['tweet_id']
     avg_likes_per_dog_type[1:].plot(kind='bar');
     plt.title('AVERAGE LIKES PER DOG TYPE');
+    plt.xlabel('DOG TYPE')
+    plt.ylabel('AVG. NO. OF LIKES')
     plt.show()
 
     # Thus, we can see that out of the four dog types, puppo received the maximum likes while pupper received the least
